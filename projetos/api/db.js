@@ -1,5 +1,10 @@
 import {Pool} from 'pg';
 
+// const BD = new Pool({
+//     connectionString:"postgres.svmnakkoyasjfrwztfea:5AskbtwhkvDDrDFu@aws-1-sa-east-1.pooler.supabase.com:5432/postgres",
+//     ssl: {rejectUnauthorized: false}
+// })
+
 const BD = new Pool({
     user: 'postgres',
     host: 'localhost',

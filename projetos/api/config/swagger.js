@@ -7,7 +7,9 @@ const documentacao = {
         version: '1.0.0'
     },
     servers: [
-        {url: 'http://localhost:3000', description: 'localhost'}
+        {url: 'http://localhost:3000', description: 'localhost'},
+        {url: 'https://api-eosin-rho.vercel.app', description: 'Vercel'}
+
     ],
     tags: [
         {name: 'Usuários', description: 'Operações relacionadas aos usuários'},
@@ -330,29 +332,40 @@ const documentacao = {
             }
         }
             },
-             post: {
-        tags:['Subcategorias'],
-        summary: 'Cadastrar nova subcategoria',
-        description: "Recebe nome, ativo e id_categoria",
-        requestBody: {
-            required: true,
-            content: {
-                "application/json":{
-                    schema: {
-                        $ref: "#/components/schemas/Cadastrar_Subcategoria"
+            post: {
+    tags: ['Subcategorias'],
+    summary: 'Cadastrar nova subcategoria',
+    description: "Recebe nome, ativo e id_categoria",
+    requestBody: {
+        required: true,
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    required: ["nome", "id_categoria"],
+                    properties: {
+                        nome: {
+                            type: "string",
+                            example: "Placas de Vídeo"
+                        },
+                        ativo: {
+                            type: "boolean",
+                            example: true
+                        },
+                        id_categoria: {
+                            type: "integer",
+                            example: 1
+                        }
                     }
                 }
             }
-        },
-        responses: {
-            201: {
-                description: "Subcategoria cadastrada com sucesso!"
-            },
-            500: {
-                description: "Erro interno no servidor"
-            }
         }
-            }
+    },
+    responses: {
+        201: { description: "Subcategoria cadastrada com sucesso!" },
+        500: { description: "Erro interno no servidor" }
+    }
+        }
         },
 
         "/subcategorias/{id_subcategoria}": {
@@ -367,14 +380,31 @@ const documentacao = {
                 schema: { type: 'integer', example: 1 }
             }
         ],
-        requestBody: {
+            requestBody: {
             required: true,
-            content:{
-                "application/json":{
-                    schema: {$ref: "#/components/schemas/Atualizar_Subcategoria"}
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            nome: {
+                                type: "string",
+                                example: "Processadores"
+                            },
+                            ativo: {
+                                type: "boolean",
+                                example: true
+                            },
+                            id_categoria: {
+                                type: "integer",
+                                example: 2
+                            }
+                        }
+                    }
                 }
             }
         },
+
         responses: {
             200: { description: "Atualizada com sucesso!" },
             404: { description: "Subcategoria não encontrada" },
@@ -627,15 +657,54 @@ const documentacao = {
                     }
                 }
             },
+        },
+        "/dashboard/maiores-gastos": {
+    get: {
+        tags: ["Dashboard"],
+        summary: "Top 5 maiores despesas",
+        description: "Retorna as 5 maiores despesas",
+        // security: [{bearerAuth: []}],
+        responses: {
+            200: {
+                description: "Sucesso",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "array",
+                            items: {
+                                type: "object",
+                                properties: {
+                                    descricao: { 
+                                        type: 'string', 
+                                        example: "Aluguel de escritório" 
+                                    },
+                                    valor: { 
+                                        type: 'number', 
+                                        example: 1500.50 
+                                    },
+                                    data_registro: { 
+                                        type: 'string', 
+                                        format: 'date_time', 
+                                        example: "15/05/2026"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+
     },
     components:{
-        securitySchemes:{
-            bearerAuth:{
+         securitySchemes: {
+            bearerAuth: {
                 type: 'http',
                 scheme: 'bearer',
                 bearerFormat: 'JWT',
-                description: 'Insira o token obtido no login'
+                description: 'Insira o token JWT gerado no login para acessar as rotas protegidas.'
             }
         },
         schemas:{

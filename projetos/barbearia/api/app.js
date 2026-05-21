@@ -5,6 +5,7 @@ import cors from 'cors';
 import rotasUsuarios from "./src/routes/rotasUsuarios.js";
 import rotasServicos from "./src/routes/rotasServicos.js";
 import rotasAgendamentos from "./src/routes/rotasAgendamentos.js";
+import rotasDashboard from "./src/routes/rotasDashboard.js";
 
 // BANCO
 import { BD, testarConexao } from "./db.js";
@@ -36,9 +37,9 @@ app.get('/', async (req, res) => {
 app.use(rotasUsuarios);
 app.use(rotasServicos);
 app.use(rotasAgendamentos);
+app.use(rotasDashboard);
 
-
-const porta = 3000;
+const porta = 3001;
 
 app.listen(porta, () => {
     console.log(`Servidor rodando em http://localhost:${porta}`);

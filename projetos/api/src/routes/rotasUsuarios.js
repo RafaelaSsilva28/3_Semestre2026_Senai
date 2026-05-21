@@ -20,30 +20,44 @@ router.get('/usuarios', autenticarToken, async (req, res) => {
     }
 });
 
+
 // 2. CADASTRAR USUÁRIO (POST)
 router.post('/usuarios', async (req, res) => {
-    // Adicionei um valor padrão para tipo_acesso caso o usuário não envie no Swagger
     const { nome, email, senha, tipo_acesso = 'comum' } = req.body;
 
+    // Validação de campos obrigatórios
     if (!nome || !email || !senha) {
-        return res.status(400).json({ error: "Nome, email e senha são obrigatórios." });
+        return res.status(400).json({ mensagem: "Nome, email e senha são obrigatórios." });
     }
 
     try {
+        // 1. CORREÇÃO AQUI: Alinhado para buscar 'id_usuario' em vez de 'id'
+        const verifEmail = 'SELECT id_usuario FROM usuarios WHERE email = $1';
+        const usuarioExistente = await BD.query(verifEmail, [email]);
+        
+        if (usuarioExistente.rows.length > 0) {
+            return res.status(400).json({ mensagem: "Este e-mail já está em uso." });
+        }
+
+        // 2. Criptografa a senha
         const saltRounds = 10;
         const senhaCriptografada = await bcrypt.hash(senha, saltRounds);
         
-        // Adicionado 'ativo' como true por padrão na inserção
+        // 3. Insere o novo usuário
         const comando = `INSERT INTO usuarios (nome, email, senha, tipo_acesso, ativo) VALUES ($1, $2, $3, $4, true)`;
         const valores = [nome, email, senhaCriptografada, tipo_acesso];
 
         await BD.query(comando, valores);
-        return res.status(201).json("Usuario cadastrado com sucesso.");
+        
+        return res.status(201).json({ mensagem: "Usuário cadastrado com sucesso." });
+
     } catch (error) {
-        console.error('Erro ao cadastrar usuarios', error.message);
-        return res.status(500).json({ error: 'Erro ao cadastrar usuario: ' + error.message });
+        // Exibe o erro real no terminal do VS Code/Node para monitoramento
+        console.error('Erro ao cadastrar usuários:', error);
+        return res.status(500).json({ mensagem: 'Erro interno ao cadastrar usuário.' });
     }
 });
+
 
 // 3. ATUALIZAR USUÁRIO COMPLETO (PUT)
 router.put('/usuarios/:id_usuario', async (req, res) => {

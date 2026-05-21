@@ -252,29 +252,6 @@ router.get('/transacoes/total', async(req, res) =>{
     }
 })
 
-//endpoints do Dashboard
-
-//transações por categoria
-router.get('/dashboard/categorias', async(req, res) =>{
-    const{tipo} = req.query;
-    try{
-        const comando = `
-            SELECT c.nome, SUM(t.valor)as total
-            FROM transacoes t
-            INNER JOIN categorias c ON t.id_categoria = c.id_categoria
-            WHERE t.tipo = $1
-            GROUP BY c.nome
-            ORDER BY total DESC 
-        `
-        const resultado = await BD.query(comando, [tipo.toUpperCase()])
-        return res.status(200).json({
-            tipo: tipo.toLocaleLowerCase(),
-            total: resultado.rows[0].total || 0
-        })
-    }catch(error){
-        return res.status(500).json({error: error.message})
-    }
-})
 
 export default router;
 
