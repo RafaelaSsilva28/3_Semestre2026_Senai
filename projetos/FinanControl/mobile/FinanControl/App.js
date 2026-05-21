@@ -1,8 +1,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './pages/Login';
-import MenuDrawer from './components/MenuDrawer';
+// Caminhos corrigidos apontando para dentro da pasta 'src'
+import Login from './src/pages/Login';
+import MenuDrawer from './src/pages/MenuDrawer';
 
 const Stack = createNativeStackNavigator();
 

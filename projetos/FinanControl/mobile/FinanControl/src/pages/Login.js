@@ -5,7 +5,7 @@ export default function Login ({navigation}) {
         <View>
             <Text>Tela de Login</Text>
             <Button title="Entrar" 
-            onPress={() => navigation.navigate('MenuDrawe')} />
+            onPress={() => navigation.navigate('MenuDrawer')} />
         </View>
     )
 }
