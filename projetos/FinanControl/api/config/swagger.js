@@ -469,77 +469,74 @@ const documentacao = {
             }
         },
 
-        "/transacoes/categorias/{id_categoria}": {
-            get: {
-                tags:['Transações'],
-                summary: "Buscar por ID de categoria",
-                parameters:[
-                    {
-                        name:"id_categoria",
-                        in:"path",
-                        required:true,
-                        schema:{type:"integer", example:1}
+        "/transacoes/{id_transacao}": {
+    get: {
+        tags: ['Transações'],
+        summary: "Buscar transação por ID",
+        parameters: [
+            {
+                name: "id_transacao",
+                in: "path",
+                required: true,
+                schema: { type: "integer", example: 1 }
+            }
+        ],
+        responses: {
+            200: {
+                description: "Encontrada",
+                content: {
+                    "application/json": {
+                        schema: { $ref: "#/components/schemas/Listar_Transacoes" }
                     }
-                ],
-                responses:{
-                    200:{
-                        description:"Encontrada",
-                        content:{
-                            "application/json":{
-                                schema: {$ref:"#/components/schemas/Listar_Transacoes"}
-                            }
-                        }
-                    },
-                    404:{description:"Não encontrada"}
                 }
             },
+            404: { description: "Não encontrada" }
+        }
+    },
 
-                       put: {
-                tags:['Transações'],
-                summary: "Atualizar transação",
-                parameters:[
-                    {
-                        // Alterado de "id_transacao" para "id_categoria" para casar com a URL
-                        name:"id_categoria", 
-                        in:"path",
-                        required:true,
-                        schema:{type:"integer", example:1}
-                    }
-                ],
-                requestBody:{
-                    required:true,
-                    content:{
-                        "application/json":{
-                            schema: {$ref:"#/components/schemas/Atualizar_Transacao"}
-                        }
-                    }
-                },
-                responses:{
-                    200:{description:"Atualizada"},
-                    404:{description:"Não encontrada"}
-                }
-            },
-
-
-            delete: {
-                tags:['Transações'],
-                summary: "Deletar transação",
-                parameters:[
-                    {
-                        // Alterado para bater com a URL /transacoes/categorias/{id_categoria}
-                        name:"id_categoria",
-                        in:"path",
-                        required:true,
-                        schema:{type:"integer", example:1}
-                    }
-                ],
-                responses:{
-                    200:{description:"Deletada"},
-                    404:{description:"Não encontrada"}
+    put: {
+        tags: ['Transações'],
+        summary: "Atualizar transação por ID",
+        parameters: [
+            {
+                name: "id_transacao",
+                in: "path",
+                required: true,
+                schema: { type: "integer", example: 1 }
+            }
+        ],
+        requestBody: {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/components/schemas/Atualizar_Transacao" }
                 }
             }
-
         },
+        responses: {
+            200: { description: "Atualizada" },
+            404: { description: "Não encontrada" }
+        }
+    },
+
+    delete: {
+        tags: ['Transações'],
+        summary: "Deletar transação por ID",
+        parameters: [
+            {
+                name: "id_transacao",
+                in: "path",
+                required: true,
+                schema: { type: "integer", example: 1 }
+            }
+        ],
+        responses: {
+            200: { description: "Deletada" },
+            404: { description: "Não encontrada" }
+        }
+    }
+},
+
 
         "/transacoes/tipo/{tipo}": {
             get: {

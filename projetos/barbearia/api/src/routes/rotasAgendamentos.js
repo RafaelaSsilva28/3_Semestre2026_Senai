@@ -46,40 +46,51 @@ router.get('/agendamentos', async (req, res) => {
 // 2. CADASTRAR AGENDAMENTO
 // ======================================
 
-router.post('/agendamentos', async (req, res) => {
+// ======================================
+// 2. CADASTRAR AGENDAMENTO (Corrigido com valor e status)
+// ======================================
 
+router.post('/agendamentos', async (req, res) => {
     const {
         id_cliente,
         id_servico,
-        data_hora
+        data_hora,
+        valor,
+        status
     } = req.body;
 
+    // Validação de campos obrigatórios
     if (
         !id_cliente ||
         !id_servico ||
-        !data_hora
+        !data_hora ||
+        valor === undefined || // Aceita o valor 0 se necessário
+        !status
     ) {
         return res.status(400).json({
-            error: 'Todos os campos são obrigatórios'
+            error: 'Todos os campos são obrigatórios (incluindo valor e status)'
         });
     }
 
     try {
-
         const comando = `
             INSERT INTO agendamentos
             (
                 id_cliente,
                 id_servico,
-                data_hora
+                data_hora,
+                valor,
+                status
             )
-            VALUES ($1, $2, $3)
+            VALUES ($1, $2, $3, $4, $5)
         `;
 
         const valores = [
             id_cliente,
             id_servico,
-            data_hora
+            data_hora,
+            valor,
+            status
         ];
 
         await BD.query(comando, valores);
@@ -89,11 +100,11 @@ router.post('/agendamentos', async (req, res) => {
         });
 
     } catch (error) {
-
-        console.error(error);
+        // Exibe o erro real do PostgreSQL no terminal do VS Code
+        console.error('Erro no Banco de Dados:', error.message);
 
         return res.status(500).json({
-            error: 'Erro ao cadastrar agendamento'
+            error: 'Erro ao cadastrar agendamento: ' + error.message
         });
     }
 });

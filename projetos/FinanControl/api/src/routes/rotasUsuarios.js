@@ -33,7 +33,7 @@ router.post('/usuarios', async (req, res) => {
     try {
         // 1. CORREÇÃO AQUI: Alinhado para buscar 'id_usuario' em vez de 'id'
         const verifEmail = 'SELECT id_usuario FROM usuarios WHERE email = $1';
-        const usuarioExistente = await BD.query(verifEmail, [email]);
+        const usuarioExistente = await BD.query(verifEmail,[email]);
         
         if (usuarioExistente.rows.length > 0) {
             return res.status(400).json({ mensagem: "Este e-mail já está em uso." });

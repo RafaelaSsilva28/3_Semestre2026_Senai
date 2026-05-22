@@ -1,17 +1,17 @@
 import {Pool} from 'pg';
 
-// const BD = new Pool({
-//     connectionString:"postgres.svmnakkoyasjfrwztfea:5AskbtwhkvDDrDFu@aws-1-sa-east-1.pooler.supabase.com:5432/postgres",
-//     ssl: {rejectUnauthorized: false}
-// })
-
 const BD = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'bd_finan_control_3b',
-    port: 5432,
-    password: 'admin'
-});
+    connectionString:"postgres://postgres.svmnakkoyasjfrwztfea:5AskbtwhkvDDrDFu@aws-1-sa-east-1.pooler.supabase.com:5432/postgres",
+    ssl: {rejectUnauthorized: false}
+})
+
+// const BD = new Pool({
+//     user: 'postgres',
+//     host: 'localhost',
+//     database: 'bd_finan_control_3b',
+//     port: 5432,
+//     password: 'admin'
+// });
 
 const testarConexao = async () => {
     try{

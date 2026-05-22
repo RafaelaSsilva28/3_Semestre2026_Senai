@@ -13,7 +13,7 @@ const documentacao = {
 
     servers: [
         {
-            url: 'http://localhost:3000',
+            url: 'http://localhost:3001',
             description: 'Servidor Local'
         }
     ],
@@ -375,140 +375,87 @@ const documentacao = {
         // =====================================================
 
         "/agendamentos": {
-
-            get: {
-                tags: ["Agendamentos"],
-                summary: "Listar agendamentos",
-
-                responses: {
-                    200: {
-                        description: "Dados obtidos com sucesso",
-
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    type: "array",
-
-                                    items: {
-                                        $ref: "#/components/schemas/Lista_Agendamentos"
-                                    }
-                                }
-                            }
-                        }
+    get: {
+        tags: ['Agendamentos'],
+        summary: "Listar todos os agendamentos",
+        responses: {
+            200: {
+                description: "Lista de agendamentos retornada com sucesso",
+                content: {
+                    "application/json": {
+                        schema: { $ref: "#/components/schemas/Listar_Agendamentos" }
                     }
                 }
             },
+            500: { description: "Erro interno no servidor" }
+        }
+    },
 
-            post: {
-                tags: ["Agendamentos"],
-                summary: "Cadastrar novo agendamento",
-
-                requestBody: {
-                    required: true,
-
-                    content: {
-                        "application/json": {
-                            schema: {
-                                $ref: "#/components/schemas/Cadastro_Agendamentos"
-                            }
-                        }
-                    }
-                },
-
-                responses: {
-                    201: {
-                        description: "Agendamento cadastrado com sucesso"
-                    },
-
-                    400: {
-                        description: "Erro na requisição"
-                    },
-
-                    500: {
-                        description: "Erro no servidor"
-                    }
+    post: {
+        tags: ['Agendamentos'],
+        summary: "Cadastrar um novo agendamento",
+        requestBody: {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/components/schemas/Cadastrar_Agendamento" }
                 }
             }
         },
+        responses: {
+            201: { description: "Agendamento cadastrado com sucesso" },
+            400: { description: "Todos os campos são obrigatórios" },
+            500: { description: "Erro interno no servidor" }
+        }
+    }
+},
 
-
-
-        "/agendamentos/{id_agendamento}": {
-
-            put: {
-                tags: ["Agendamentos"],
-                summary: "Atualizar agendamento",
-
-                parameters: [
-                    {
-                        name: "id_agendamento",
-                        in: "path",
-                        required: true,
-
-                        schema: {
-                            type: "integer"
-                        },
-
-                        example: 1
-                    }
-                ],
-
-                requestBody: {
-                    required: true,
-
-                    content: {
-                        "application/json": {
-                            schema: {
-                                $ref: "#/components/schemas/Atualizacao_Agendamentos"
-                            }
-                        }
-                    }
-                },
-
-                responses: {
-                    200: {
-                        description: "Agendamento atualizado"
-                    },
-
-                    404: {
-                        description: "Agendamento não encontrado"
-                    },
-
-                    500: {
-                        description: "Erro no servidor"
-                    }
-                }
-            },
-
-            delete: {
-                tags: ["Agendamentos"],
-                summary: "Remover agendamento",
-
-                parameters: [
-                    {
-                        name: "id_agendamento",
-                        in: "path",
-                        required: true,
-
-                        schema: {
-                            type: "integer"
-                        },
-
-                        example: 1
-                    }
-                ],
-
-                responses: {
-                    200: {
-                        description: "Agendamento removido"
-                    },
-
-                    500: {
-                        description: "Erro no servidor"
-                    }
+"/agendamentos/{id_agendamento}": {
+    put: {
+        tags: ['Agendamentos'],
+        summary: "Atualizar um agendamento por ID",
+        parameters: [
+            {
+                name: "id_agendamento",
+                in: "path",
+                required: true,
+                schema: { type: "integer", example: 1 }
+            }
+        ],
+        requestBody: {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: { $ref: "#/components/schemas/Cadastrar_Agendamento" }
                 }
             }
+        },
+        responses: {
+            200: { description: "Agendamento atualizado com sucesso" },
+            400: { description: "Todos os campos são obrigatórios" },
+            404: { description: "Agendamento não encontrado" },
+            500: { description: "Erro interno no servidor" }
         }
+    },
+
+    delete: {
+        tags: ['Agendamentos'],
+        summary: "Deletar um agendamento por ID",
+        parameters: [
+            {
+                name: "id_agendamento",
+                in: "path",
+                required: true,
+                schema: { type: "integer", example: 1 }
+            }
+        ],
+        responses: {
+            200: { description: "Agendamento removido com sucesso" },
+            404: { description: "Agendamento não encontrado" },
+            500: { description: "Erro interno no servidor" }
+        }
+    }
+}
     },
 
 
@@ -756,118 +703,65 @@ const documentacao = {
             // AGENDAMENTOS
             // ============================
 
-            Lista_Agendamentos: {
+           Cadastrar_Agendamento: {
+    type: "object",
+    required: ["id_cliente", "id_servico", "data_hora", "valor", "status"],
+    properties: {
+        id_cliente: {
+            type: "integer",
+            description: "ID do usuário/cliente cadastrado",
+            example: 1
+        },
+        id_servico: {
+            type: "integer",
+            description: "ID do serviço da barbearia",
+            example: 2
+        },
+        data_hora: {
+            type: "string",
+            format: "date-time",
+            description: "Data e horário formatados (YYYY-MM-DD HH:MM:SS)",
+            example: "2026-05-25 14:30:00"
+        },
+        valor: {
+            type: "number",
+            description: "Preço do serviço prestado",
+            example: 45.00
+        },
+        status: {
+            type: "string",
+            description: "Situação atual do agendamento",
+            example: "Pendente"
+        }
+    }
+},
+
+        Listar_Agendamentos: {
+            type: "array",
+            items: {
                 type: "object",
-
                 properties: {
-
                     id_agendamento: {
                         type: "integer",
                         example: 1
                     },
-
-                    nome_cliente: {
+                    cliente: {
                         type: "string",
-                        example: "Rafaela"
+                        description: "Nome do cliente trazido do banco",
+                        example: "Rafaela Souza"
                     },
-
                     nome_servico: {
                         type: "string",
-                        example: "Corte Americano"
+                        description: "Nome do serviço trazido do banco",
+                        example: "Corte de Cabelo + Barba"
                     },
-
-                    data_agendamento: {
+                    data_hora: {
                         type: "string",
-                        example: "2026-05-15"
-                    },
-
-                    horario: {
-                        type: "string",
-                        example: "14:30"
-                    },
-
-                    status: {
-                        type: "string",
-                        example: "Pendente"
-                    }
-                }
-            },
-
-
-
-            Cadastro_Agendamentos: {
-                type: "object",
-
-                properties: {
-
-                    nome_cliente: {
-                        type: "string",
-                        example: "Rafaela"
-                    },
-
-                    nome_servico: {
-                        type: "string",
-                        example: "Barba"
-                    },
-
-                    data_agendamento: {
-                        type: "string",
-                        example: "2026-05-20"
-                    },
-
-                    horario: {
-                        type: "string",
-                        example: "15:00"
-                    },
-
-                    status: {
-                        type: "string",
-                        example: "Pendente"
-                    }
-                }
-            },
-
-
-
-            Atualizacao_Agendamentos: {
-                type: "object",
-
-                required: [
-                    "nome_cliente",
-                    "nome_servico",
-                    "data_agendamento",
-                    "horario",
-                    "status"
-                ],
-
-                properties: {
-
-                    nome_cliente: {
-                        type: "string",
-                        example: "Rafaela Silva"
-                    },
-
-                    nome_servico: {
-                        type: "string",
-                        example: "Corte + Barba"
-                    },
-
-                    data_agendamento: {
-                        type: "string",
-                        example: "2026-05-25"
-                    },
-
-                    horario: {
-                        type: "string",
-                        example: "16:00"
-                    },
-
-                    status: {
-                        type: "string",
-                        example: "Confirmado"
+                        example: "2026-05-25T17:30:00.000Z"
                     }
                 }
             }
+        }
         }
     }
 }
