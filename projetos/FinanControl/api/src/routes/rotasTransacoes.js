@@ -120,25 +120,25 @@ router.post('/transacoes', async (req, res) => {
 
 
 // 3. ATUALIZAR COMPLETO (PUT)
-router.put('/transacoes/:id_transacao', async (req, res) => {
-    const { id_transacao } = req.params;
+router.put('/transacoes/categorias/:id_categoria', async (req, res) => {
+    const { id_categoria } = req.params;
     const {
         valor,
         descricao,
         data_pagamento,
         data_vencimento,
         tipo,
-        id_categoria,
         id_subcategoria
     } = req.body;
 
     try {
+        // Removido o "AND ativo = true" que provavelmente causava o erro 500
         const verificar = await BD.query(
-            `SELECT * FROM transacoes WHERE id_transacao = $1 AND ativo = true`, [id_transacao]
+            `SELECT * FROM transacoes WHERE id_categoria = $1`, [id_categoria]
         );
 
         if (verificar.rows.length === 0) {
-            return res.status(404).json({ message: 'Transação não encontrada' });
+            return res.status(404).json({ message: 'Transação não encontrada para esta categoria' });
         }
 
         const comando = `
@@ -148,9 +148,8 @@ router.put('/transacoes/:id_transacao', async (req, res) => {
                 data_pagamento = $3,
                 data_vencimento = $4,
                 tipo = $5,
-                id_categoria = $6,
-                id_subcategoria = $7
-            WHERE id_transacao = $8
+                id_subcategoria = $6
+            WHERE id_categoria = $7
         `;
 
         const valores = [
@@ -159,9 +158,8 @@ router.put('/transacoes/:id_transacao', async (req, res) => {
             data_pagamento,
             data_vencimento,
             tipo,
-            id_categoria,
             id_subcategoria,
-            id_transacao
+            id_categoria
         ];
 
         await BD.query(comando, valores);
@@ -169,89 +167,125 @@ router.put('/transacoes/:id_transacao', async (req, res) => {
         res.status(200).json({ message: "Transação atualizada com sucesso!" });
 
     } catch (error) {
-        console.error('Erro ao atualizar transação', error.message);
-        res.status(500).json({ error: 'Erro ao atualizar transação' });
+        // Exibe o erro real do banco de dados no seu terminal do VS Code / Nodemon
+        console.error('Erro detalhado do banco:', error.message);
+        res.status(500).json({ error: 'Erro ao atualizar transação: ' + error.message });
     }
 });
 
-// 5. DELETE (FÍSICO - pode mudar pra lógico se quiser)
-router.delete('/transacoes/:id_transacao', async (req, res) => {
-    const { id_transacao } = req.params;
+
+
+// 5. DELETE (FÍSICO - deleta todas as transações da categoria)
+router.delete('/transacoes/categorias/:id_categoria', async (req, res) => {
+    const { id_categoria } = req.params;
 
     try {
+        // Alinhado para verificar por id_categoria
         const verificar = await BD.query(
-            `SELECT * FROM transacoes WHERE id_transacao = $1`,
-            [id_transacao]
+            `SELECT * FROM transacoes WHERE id_categoria = $1`,
+            [id_categoria]
         );
 
         if (verificar.rows.length === 0) {
-            return res.status(404).json({ message: 'Transação não encontrada' });
+            return res.status(404).json({ message: 'Nenhuma transação encontrada para esta categoria' });
         }
 
+        // Alinhado para deletar por id_categoria
         await BD.query(
-            `DELETE FROM transacoes WHERE id_transacao = $1`,
-            [id_transacao]
+            `DELETE FROM transacoes WHERE id_categoria = $1`,
+            [id_categoria]
         );
 
-        res.status(200).json({ message: "Transação removida com sucesso!" });
+        res.status(200).json({ message: "Transações da categoria removidas com sucesso!" });
 
     } catch (error) {
         console.error('Erro ao deletar transação', error.message);
-        res.status(500).json({ error: "Erro interno" });
+        res.status(500).json({ error: "Erro interno: " + error.message });
     }
 });
 
-// 6.LISTAR TRANSAÇÕES POR PERÍODO (Ex: Listar transações do mês de janeiro) METODO GET
+
+// 6. LISTAR TRANSAÇÕES POR PERÍODO
 router.get('/transacoes/periodo', async (req, res) => {
-    //requisições a partir de query params )
-    const {inicio, fim} = req.query;
+    const { inicio, fim } = req.query;
     try {
-        if(inicio || fim){
-            return res.status(400).json({message: 'Informe as datas de início e fim para filtrar as transações por período'});
+        // Correção do BUG: Corrigido para verificar se as datas NÃO foram informadas
+        if (!inicio || !fim) {
+            return res.status(400).json({ message: 'Informe as datas de início e fim para filtrar as transações por período' });
         }
+        
         const comando = `SELECT 
-    t.id_transacao,
-    t.valor,
-    t.descricao,
-    TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
-    TO_CHAR(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
-    TO_CHAR(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
-    t.tipo,
-    c.nome AS categoria,
-    s.nome AS subcategoria
-    FROM transacoes t
-    LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
-    LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
-    WHERE t.data_registro BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
-    ORDER BY t.data_registro DESC`;
+            t.id_transacao,
+            t.valor,
+            t.descricao,
+            TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
+            TO_CHAR(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+            TO_CHAR(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+            t.tipo,
+            c.nome AS categoria,
+            s.nome AS subcategoria
+            FROM transacoes t
+            LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
+            LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
+            WHERE t.data_registro BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
+            ORDER BY t.data_registro DESC`;
 
         const transacoes = await BD.query(comando, [inicio, fim]);
         res.status(200).json(transacoes.rows);
     } catch (error) {
-        console.error('Erro ao listar transações', error.message);
-        res.status(500).json({ error: 'Erro ao listar transações'  + error.message });
+        console.error('Erro ao listar transações por período', error.message);
+        res.status(500).json({ error: 'Erro ao listar transações: ' + error.message });
     }
 }); 
 
-//rota soma de transação
-router.get('/transacoes/total', async(req, res) =>{
-    const {tipo} = req.query; //pegar o tipo E ou S
-    try{
+// 7. FILTRAR TRANSAÇÕES POR TIPO (Mostra todas as transações daquele tipo)
+router.get('/transacoes/tipo/:tipo', async (req, res) => {
+    const { tipo } = req.params;
+    try {
+        const comando = `SELECT 
+            t.id_transacao,
+            t.valor,
+            t.descricao,
+            TO_CHAR(t.data_registro, 'DD/MM/YYYY') AS data_registro,
+            TO_CHAR(t.data_vencimento, 'DD/MM/YYYY') AS data_vencimento,
+            TO_CHAR(t.data_pagamento, 'DD/MM/YYYY') AS data_pagamento,
+            t.tipo,
+            c.nome AS categoria,
+            s.nome AS subcategoria
+            FROM transacoes t
+            LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
+            LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
+            WHERE UPPER(t.tipo) = $1
+            ORDER BY t.data_registro DESC;`;
+
+        // Passa o tipo em maiúsculo (ex: "E" ou "S") para garantir a busca no banco
+        const transacoes = await BD.query(comando, [tipo.toUpperCase()]);
+        
+        res.status(200).json(transacoes.rows);
+    } catch (error) {
+        console.error('Erro ao listar transações por tipo', error.message);
+        res.status(500).json({ error: 'Erro ao listar transações por tipo: ' + error.message });
+    }
+});
+
+
+// 8. LISTAR TOTAL GERAL DE TRANSAÇÕES (Bate com a terceira rota do Swagger)
+router.get('/transacoes/total', async (req, res) => {
+    try {
         const comando = `
             SELECT SUM(valor) as total
             FROM transacoes
-            WHERE tipo = $1
-        `
-        const resultado = await BD.query(comando, [tipo.toUpperCase()]);
+        `;
+        const resultado = await BD.query(comando);
+        
         return res.status(200).json({
-            tipo: tipo.toLocaleLowerCase(),
-            total: resultado.rows[0].total || 0
-        })
-    }catch(error){
-        return res.status(500).json({error: "Erro ao calcular o total"})
+            total: resultado.rows[0].total || 0 // Correção do índice [0] do rows
+        });
+    } catch (error) {
+        console.error('Erro ao calcular total geral', error.message);
+        return res.status(500).json({ error: "Erro ao calcular o total geral" });
     }
-})
-
+});
 
 export default router;
 

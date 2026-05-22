@@ -7,7 +7,7 @@ const documentacao = {
         version: '1.0.0'
     },
     servers: [
-        {url: 'http://localhost:3000', description: 'localhost'},
+        {url: 'http://localhost:3001', description: 'localhost'},
         {url: 'https://api-eosin-rho.vercel.app', description: 'Vercel'}
 
     ],
@@ -29,7 +29,7 @@ const documentacao = {
                     200:{
                         description: "Dados obtidos com sucesso!",
                         content: {
-                            "apllication/json":{
+                            "application/json":{
                                 schema:{
                                     type: "array",
                                     items: {$ref: '#/components/schemas/Listar_Usuarios'}
@@ -187,14 +187,14 @@ const documentacao = {
             }
         },
         "/categorias":{
-             get: {
+            get: {
                 tags:["Categorias"],
                 summary: "Listar todos os categorias",
                 responses: {
                     200:{
                         description: "Dados obtidos com sucesso!",
                         content: {
-                            "apllication/json":{
+                            "application/json":{
                                 schema:{
                                     type: "array",
                                     items: {$ref: '#/components/schemas/Listar_Categorias'}
@@ -229,7 +229,7 @@ const documentacao = {
             }
         },
         "/categorias/{id_categoria}":{
-             put: {
+            put: {
                 tags: ['Categorias'],
                 summary: 'Atualizar todos os dados da categoria',
                 description: 'Atualiza todos os dados de uma categoria existente, é necessário enviar todos os campos',
@@ -494,15 +494,16 @@ const documentacao = {
                 }
             },
 
-            put: {
+                       put: {
                 tags:['Transações'],
                 summary: "Atualizar transação",
                 parameters:[
                     {
-                        name:"id_transacao",
+                        // Alterado de "id_transacao" para "id_categoria" para casar com a URL
+                        name:"id_categoria", 
                         in:"path",
                         required:true,
-                        schema:{type:"integer"}
+                        schema:{type:"integer", example:1}
                     }
                 ],
                 requestBody:{
@@ -519,15 +520,17 @@ const documentacao = {
                 }
             },
 
+
             delete: {
                 tags:['Transações'],
                 summary: "Deletar transação",
                 parameters:[
                     {
-                        name:"id_transacao",
+                        // Alterado para bater com a URL /transacoes/categorias/{id_categoria}
+                        name:"id_categoria",
                         in:"path",
                         required:true,
-                        schema:{type:"integer"}
+                        schema:{type:"integer", example:1}
                     }
                 ],
                 responses:{
@@ -535,6 +538,7 @@ const documentacao = {
                     404:{description:"Não encontrada"}
                 }
             }
+
         },
 
         "/transacoes/tipo/{tipo}": {
@@ -696,7 +700,6 @@ const documentacao = {
         }
     }
 }
-
     },
     components:{
          securitySchemes: {
@@ -735,14 +738,14 @@ const documentacao = {
             },
             Login_Usuario : {
                 type: 'object',
-                required: true,
+                required: ["email", "senha"],
                 properties: {
                     nome: {type: "string", example: "Ricardo"},
                     email: {type: "string", example: "ricardo2@email.com"},
                     senha: {type: "string", example: "Senha123"}
                 }
             },
-            Reposta_Login : {
+            Resposta_Login : {
                 type: 'object',
                 properties:{
                 message: {type: 'string', example: 'Login realizado com sucesso'},

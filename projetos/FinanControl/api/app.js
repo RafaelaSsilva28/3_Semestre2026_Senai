@@ -11,9 +11,10 @@ import documentacao from './config/swagger.js';
 import cors from 'cors'
 
 const app = express();
+app.use(cors())
+
 app.use(express.json());
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(documentacao))
-app.use(cors())
 
 app.get('/', async(req, res) =>{
     await testarConexao();
