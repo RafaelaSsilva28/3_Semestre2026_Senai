@@ -37,7 +37,7 @@ export default function Login ({navigation}) {
             }
     
             if (resposta.ok) { 
-                 AsyncStorage.setItem('UsuarioLogado', JSON.stringify(dados)); 
+                AsyncStorage.setItem('UsuarioLogado', JSON.stringify(dados)); 
                 navigation.navigate('MenuDrawer'); 
             } else {
                 setMensagem('❌ Email ou senha inválidos'); 
