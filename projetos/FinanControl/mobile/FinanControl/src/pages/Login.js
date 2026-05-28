@@ -5,12 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {LinearGradient} from 'expo-linear-gradient'
 import {MaterialIcons} from '@expo/vector-icons'
-import { EstilosLogin } from '../styles/EstilosLogin';
+import { coresLogin, EstilosLogin } from '../styles/EstilosLogin';
 import { corFundo2, corPrincipal } from '../styles/Estilos';
+
 export default function Login ({navigation}) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [mensagem, setMensagem] = useState('');
+    const [mostrarSenha, setMostrarSenha] = useState(false)
 
     async function botaoEntrar() {
         try {
@@ -18,7 +20,7 @@ export default function Login ({navigation}) {
                 setMensagem('Preencha todos os campos');
                 return;
             }
-            const login = {
+            const dadosLogin = {
                 "email": email,
                 "senha": senha
             }
@@ -27,7 +29,7 @@ export default function Login ({navigation}) {
                 headers: {          
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(login)  
+                body: JSON.stringify(dadosLogin)  
             })
             if (resposta.status == 400) {
                 setMensagem(`Rota de Login não encontrada: ${resposta.url}`);
@@ -41,7 +43,8 @@ export default function Login ({navigation}) {
             }
     
             if (resposta.ok) { 
-                AsyncStorage.setItem('UsuarioLogado', JSON.stringify(dados)); 
+                // Colocado o await aqui para salvar os dados com segurança
+                await AsyncStorage.setItem('UsuarioLogado', JSON.stringify(dados)); 
                 navigation.navigate('MenuDrawer'); 
             } else {
                 setMensagem('❌ Email ou senha inválidos'); 
@@ -52,18 +55,81 @@ export default function Login ({navigation}) {
       }
 
     return (
-        <View>
-            <Text>Tela de Login</Text>
-            <Text>Email</Text>
-            <TextInput placeholder="Digite seu email"
-            value={email} onChangeText={setEmail} />
+        <View style={EstilosLogin.container}>
+            <LinearGradient
+                colors={[corFundo2, corPrincipal]}
+                start={{ x: 0.5, y: 0}}
+                end={{ x: 0.5, y: 1}}
+                style={EstilosLogin.gradiente}
+            >
+                <View style={EstilosLogin.cabecalho}>
+                    <Image source={require('../../assets/logo (1).png')} style={EstilosLogin.iconeLogo}/>
+                    <View>
+                        <Text style={EstilosLogin.nomeApp}>FinanControl</Text>
+                        <Text style={EstilosLogin.subtituloApp}>O Seu Controle Financeiro</Text>
+                    </View>
+                </View>
 
-            <Text>Senha</Text>
-            <TextInput placeholder="Digite sua senha" secureTextEntry={true} 
-            value={senha} onChangeText={setSenha} />
+                <View style={EstilosLogin.conteudoPrincipal}>
+                    <View style={EstilosLogin.formularioLogin}>
+                        <Text style={EstilosLogin.titulo}>Acesse sua conta</Text>
+                        
+                        {/* Campo de Email */}
+                        <View style={EstilosLogin.grupoInput}>
+                            <MaterialIcons name="email" size={22} style={EstilosLogin.iconeInput}/>
+                            <TextInput 
+                                placeholder='Digite seu email' 
+                                placeholderTextColor={coresLogin.placeholder}
+                                style={EstilosLogin.input} 
+                                value={email} 
+                                onChangeText={setEmail}
+                                keyboardType='email-address' 
+                                autoCapitalize='none'
+                            />
+                        </View>
 
-            <Button title="Entrar" onPress={botaoEntrar} />
-            <Text style={{color: 'red'}}>{mensagem}</Text>
+                        {/* Campo de Senha*/}
+                        <View style={EstilosLogin.grupoInput}>
+                            <MaterialIcons name="lock" size={22} style={EstilosLogin.iconeInput}/>
+                            <TextInput 
+                                placeholder='Digite sua senha' 
+                                placeholderTextColor={coresLogin.placeholder}
+                                style={EstilosLogin.input} 
+                                value={senha} 
+                                onChangeText={setSenha}
+                                secureTextEntry={!mostrarSenha}
+                                autoCapitalize='none'
+                            />
+                            <TouchableOpacity style={EstilosLogin.alternarVisibilidade}
+                                onPress={() => setMostrarSenha(!mostrarSenha)}
+                            >
+                                <MaterialIcons
+                                size={24} color={coresLogin.icone}
+                                name={mostrarSenha == true ? 'visibility-off' : 'visibility'}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={EstilosLogin.entreOpcoes}>
+                            <View style={EstilosLogin.containerCheckbox}>
+                                <Switch/>
+                                <Text style={EstilosLogin.rotuloCheckbox}>Lembrar-me</Text>
+                            </View>
+                            <Text style={EstilosLogin.esqueceuSenha}>esqueceu a Senha?</Text>
+                        </View>
+
+                    <TouchableOpacity style={EstilosLogin.botaoEntrar} onPress={botaoEntrar}>
+                        <Text style={EstilosLogin.textoBotaoEntrar}>Entrar</Text>
+                    </TouchableOpacity>
+
+                    <Text style={EstilosLogin.mensagemFeedback}>{mensagem}</Text>
+
+                    </View>
+
+                </View>
+
+
+
+            </LinearGradient>
         </View>
     )
 }

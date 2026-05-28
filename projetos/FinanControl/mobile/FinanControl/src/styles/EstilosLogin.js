@@ -21,7 +21,11 @@ export const EstilosLogin = StyleSheet.create({
     flex: 1,
   },
   gradiente: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 20
   },
   containerTeclado: {
     flex: 1,
