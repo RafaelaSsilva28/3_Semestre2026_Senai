@@ -1,8 +1,12 @@
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Image, Switch} from 'react-native';
 import { useState } from 'react';
 import { enderecoServidor } from '../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {LinearGradient} from 'expo-linear-gradient'
+import {MaterialIcons} from '@expo/vector-icons'
+import { EstilosLogin } from '../styles/EstilosLogin';
+import { corFundo2, corPrincipal } from '../styles/Estilos';
 export default function Login ({navigation}) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
