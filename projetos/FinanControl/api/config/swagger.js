@@ -325,7 +325,7 @@ const documentacao = {
                     "application/json":{
                         schema:{
                             type: "array",
-                            items: {$ref: '#/components/schemas/Listar_Subcategoria'}
+                            items: {$ref: '#/components/schemas/Listar_Subcategorias'}
                         }
                     }
                 }
@@ -630,63 +630,72 @@ const documentacao = {
             },
 
         },
-        "/dashboard/categorias":{
+        "/dashboard": {
             get: {
-                tags:["Dashboard"],
-                summary: "Total de gastos por categoria",
-                description: "Retornaa a soma das saidas agrupadas por categoria para o grafico",
-                // security: [{bearerAuth: []}],
-                parameters: [{
-                    name: "tipo",
-                    in: 'query',
-                    required: true,
-                    description: "Tipo de transação E para Entrada S para Saida",
-                    schema:{type: "string", enum: ["E", "S"]},
-                    example:"E"
-                }],
+                tags: ["Dashboard"],
+                summary: "Dados unificados do Dashboard",
+                description: "Retorna o resumo do mês, evolução mensal, gráficos de categorias e últimas transações.",
                 responses: {
-                    200:{
+                    200: {
                         description: "Sucesso",
                         content: {
-                            "application/json":{
-                                schema:{
-                                    type: "array",
-                                    items: {$ref: '#/components/schemas/Dashboard_Categoria'}
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-        },
-        "/dashboard/maiores-gastos": {
-    get: {
-        tags: ["Dashboard"],
-        summary: "Top 5 maiores despesas",
-        description: "Retorna as 5 maiores despesas",
-        // security: [{bearerAuth: []}],
-        responses: {
-            200: {
-                description: "Sucesso",
-                content: {
-                    "application/json": {
-                        schema: {
-                            type: "array",
-                            items: {
-                                type: "object",
-                                properties: {
-                                    descricao: { 
-                                        type: 'string', 
-                                        example: "Aluguel de escritório" 
-                                    },
-                                    valor: { 
-                                        type: 'number', 
-                                        example: 1500.50 
-                                    },
-                                    data_registro: { 
-                                        type: 'string', 
-                                        format: 'date_time', 
-                                        example: "15/05/2026"
+                            "application/json": {
+                                schema: {
+                                    type: "object",
+                                    properties: {
+                                        resumoCategorias: {
+                                            type: "array",
+                                            items: {
+                                                type: "object",
+                                                properties: {
+                                                    nome: { type: "string", example: "Salgado" },
+                                                    total: { type: "number", example: 200.00 }
+                                                }
+                                            }
+                                        },
+                                        resumoMaioresGastos: {
+                                            type: "array",
+                                            items: {
+                                                type: "object",
+                                                properties: {
+                                                    descricao: { type: "string", example: "Aluguel" },
+                                                    valor: { type: "number", example: 1500.50 },
+                                                    data_pagamento: { type: "string", example: "15/05/2026" }
+                                                }
+                                            }
+                                        },
+                                        resumoMes: {
+                                            type: "object",
+                                            properties: {
+                                                entradas: { type: "number", example: 5000.00 },
+                                                saidas: { type: "number", example: 1200.00 },
+                                                saldo: { type: "number", example: 3800.00 }
+                                            }
+                                        },
+                                        evolucaoMensal: {
+                                            type: "array",
+                                            items: {
+                                                type: "object",
+                                                properties: {
+                                                    mes: { type: "string", example: "05/2026" },
+                                                    entradas: { type: "number", example: 5000.00 },
+                                                    saidas: { type: "number", example: 1200.00 },
+                                                    saldo: { type: "number", example: 3800.00 }
+                                                }
+                                            }
+                                        },
+                                        resumoselecaoUltimasTransacoes: {
+                                            type: "array",
+                                            items: {
+                                                type: "object",
+                                                properties: {
+                                                    descricao: { type: "string", example: "Coxinha de Frango" },
+                                                    valor: { type: "number", example: 100.00 },
+                                                    tipo: { type: "string", example: "S" },
+                                                    data_pagamento: { type: "string", example: "22/05/2026" }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -695,8 +704,7 @@ const documentacao = {
                 }
             }
         }
-    }
-}
+
     },
     components:{
          securitySchemes: {
@@ -814,10 +822,12 @@ const documentacao = {
                 properties:{
                     valor:{type:"number", example:100},
                     descricao:{type:"string"},
-                    data_registro:{type:"string"},
+                    data_registro:{type:"string", example: "28-05-2026"},
                     tipo:{type:"string", enum:["E","S"]},
                     id_categoria:{type:"integer"},
-                    id_subcategoria:{type:"integer"}
+                    id_subcategoria:{type:"integer"},
+                    data_vencimento:{type:"string", example:"28-05-2026"},
+                    data_pagamento:{type:"string", example:"28-05-2026"}  
                 }
             },
             Atualizar_Transacao:{
@@ -828,7 +838,9 @@ const documentacao = {
                     data_registro:{type:"string"},
                     tipo:{type:"string"},
                     id_categoria:{type:"integer"},
-                    id_subcategoria:{type:"integer"}
+                    id_subcategoria:{type:"integer"},
+                    data_vencimento:{type:"string", example:"28/05/2026"},
+                    data_pagamento:{type:"string", example:"28/05/2026"}  
                 }
             },
             Total_Transacoes:{
@@ -855,6 +867,27 @@ const documentacao = {
                         example: 1550.10,
                     }
                 } 
+            },
+             Listar_Subcategorias: {
+                type: "object",
+                properties: {
+                    id_subcategoria: {
+                        type: "integer",
+                        example: 1
+                    },
+                    nome: {
+                        type: "string",
+                        example: "Placas de Vídeo"
+                    },
+                    id_categoria: {
+                        type: "integer",
+                        example: 1
+                    },
+                    categoria: {
+                        type: "string",
+                        example: "Informática"
+                    }
+                }
             }
 
         }

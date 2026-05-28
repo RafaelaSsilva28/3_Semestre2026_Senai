@@ -49,7 +49,7 @@ router.get('/transacoes/periodo', async (req, res) => {
             FROM transacoes t
             LEFT JOIN categorias c ON t.id_categoria = c.id_categoria
             LEFT JOIN subcategorias s ON t.id_subcategoria = s.id_subcategoria
-            WHERE t.data_registro BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
+            WHERE t.data_vencimento BETWEEN TO_DATE($1, 'DD/MM/YYYY') AND TO_DATE($2, 'DD/MM/YYYY')
             ORDER BY t.data_registro DESC`;
 
         const transacoes = await BD.query(comando, [inicio, fim]);
@@ -184,8 +184,9 @@ router.post('/transacoes', async (req, res) => {
     const {
         valor,
         descricao,
-        data_pagamento,
-        data_vencimento,
+        data_registro,   // Recebe do seu JSON
+        data_pagamento,   // Recebe exatamente "dat_pagamento" do seu JSON
+        data_vencimento, // Recebe do seu JSON
         tipo,
         id_categoria,
         id_subcategoria
@@ -194,15 +195,16 @@ router.post('/transacoes', async (req, res) => {
     try {
         const comando = `
             INSERT INTO transacoes 
-            (valor, descricao, data_pagamento, data_vencimento, tipo, id_categoria, id_subcategoria)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            (valor, descricao, data_registro, data_pagamento, data_vencimento, tipo, id_categoria, id_subcategoria)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         `;
 
         const valores = [
             valor,
             descricao,
-            data_pagamento,
-            data_vencimento,
+            data_registro,   // Salva na coluna data_registro
+            data_pagamento,   // Salva na coluna data_pagamento
+            data_vencimento, // Salva na coluna data_vencimento
             tipo,
             id_categoria,
             id_subcategoria
