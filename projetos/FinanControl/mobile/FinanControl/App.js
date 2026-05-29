@@ -12,7 +12,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} 
-         options={{ headerShown: false }} />
+        options={{ headerShown: false }} />
         <Stack.Screen name="MenuDrawer" component={MenuDrawer} 
         options={{ headerShown: false }} />
       </Stack.Navigator>
