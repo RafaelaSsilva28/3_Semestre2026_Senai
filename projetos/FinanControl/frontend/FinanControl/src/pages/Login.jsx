@@ -1,5 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { enderecoServidor } from '../utils';
 import logo from '../assets/logo.png';
 import { EstilosLogin } from '../styles/EstilosLogin';
@@ -14,7 +14,20 @@ export default function Login() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [lembrar, setLembrar] = useState(false);
 
-
+useEffect(() => {
+    async function buscarUsuario(){
+      const UsuarioLogado = await localStorage.getItem('UsuarioLogado')
+      if (UsuarioLogado){
+        const usuario = JSON.parse(UsuarioLogado)
+        if (usuario.lembrar == true){
+            navigate('/principal')
+        }
+        // 3. CORRIGIDO: Chamada da função com o nome correto
+        setDadosLogin(JSON.parse(UsuarioLogado))
+      }
+    }
+    buscarUsuario()
+  }, [])
   // ADICIONADO 'async' ANTES DA FUNÇÃO
   async function botaoEntrar(event) {
     event.preventDefault(); 

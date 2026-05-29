@@ -1,5 +1,5 @@
 import {View, Text, TextInput, TouchableOpacity, Image, Switch} from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { enderecoServidor } from '../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -13,7 +13,23 @@ export default function Login ({navigation}) {
     const [senha, setSenha] = useState('');
     const [mensagem, setMensagem] = useState('');
     const [mostrarSenha, setMostrarSenha] = useState(false)
+    const [lembrar, setLembrar] = useState(false)
 
+    useEffect(() => {
+        async function buscarUsuario(){
+          const UsuarioLogado = await AsyncStorage.getItem('UsuarioLogado')
+          if (UsuarioLogado){
+            const usuario = JSON.parse(UsuarioLogado)
+            if (usuario.lembrar == true){
+                navigation.navigate('MenuDrawer')
+            }
+            // 3. CORRIGIDO: Chamada da função com o nome correto
+            setDadosLogin(JSON.parse(UsuarioLogado))
+          }
+        }
+        buscarUsuario()
+      }, [])
+       
     async function botaoEntrar() {
         try {
             if (email == '' || senha == '') {
@@ -44,7 +60,7 @@ export default function Login ({navigation}) {
     
             if (resposta.ok) { 
                 // Colocado o await aqui para salvar os dados com segurança
-                await AsyncStorage.setItem('UsuarioLogado', JSON.stringify(dados)); 
+                AsyncStorage.setItem('UsuarioLogado', JSON.stringify({...dados, lembrar})); 
                 navigation.navigate('MenuDrawer'); 
             } else {
                 setMensagem('❌ Email ou senha inválidos'); 
@@ -111,7 +127,7 @@ export default function Login ({navigation}) {
                         </View>
                         <View style={EstilosLogin.entreOpcoes}>
                             <View style={EstilosLogin.containerCheckbox}>
-                                <Switch/>
+                                <Switch value={lembrar} onValueChange={setLembrar}/>
                                 <Text style={EstilosLogin.rotuloCheckbox}>Lembrar-me</Text>
                             </View>
                             <Text style={EstilosLogin.esqueceuSenha}>esqueceu a Senha?</Text>
