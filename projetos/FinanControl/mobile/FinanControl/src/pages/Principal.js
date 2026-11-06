@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Principal() {
 
-   const [dadoslogin, setDadosLogin] = useState(null)
+  const [dadoslogin, setDadosLogin] = useState(null)
 
   useEffect(() => {
     async function buscarUsuario(){
