@@ -1,83 +1,144 @@
-# 🌸 3º Semestre 2026 | SENAI
-### Desenvolvimento de Sistemas
+ <div align="center">
 
-<div align="center">
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:142D4E,45:245B83,100:79B5D2&text=3%C2%BA%20Semestre%20%7C%202026&fontSize=43&fontColor=FFFFFF&fontAlignY=38&desc=Minha%20jornada%20no%20Desenvolvimento%20de%20Sistemas&descAlignY=60&descSize=15&animation=fadeIn" />
 
-  <img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=500&size=22&duration=3000&pause=1000&color=C77D9B&center=true&vCenter=true&width=650&lines=Meu+aprendizado+em+Desenvolvimento+de+Sistemas;Estudando%2C+desenvolvendo+e+evoluindo!;Conhecimento+que+se+transforma+em+projetos." />
+<br/>
 
-  <br/>
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=500&size=19&duration=3000&pause=1000&color=75B8DE&center=true&vCenter=true&width=650&lines=Aprendizado+que+se+transforma+em+projetos;Prática%2C+desafios+e+novas+tecnologias;Evoluindo+um+commit+de+cada+vez!" />
 
-  <img src="https://img.shields.io/badge/SENAI-Desenvolvimento_de_Sistemas-C77D9B?style=for-the-badge&logo=bookstack&logoColor=white" />
-  <img src="https://img.shields.io/badge/ANO-2026-292333?style=for-the-badge&logo=googlecalendar&logoColor=white" />
+<br/><br/>
+
+![SENAI](https://img.shields.io/badge/SENAI-Desenvolvimento%20de%20Sistemas-245B83?style=for-the-badge)
+![Ano](https://img.shields.io/badge/Ano-2026-438CB8?style=for-the-badge)
+![Repositório](https://img.shields.io/badge/Tipo-Estudos%20e%20Projetos-6B9DBF?style=for-the-badge)
+
+<br/>
+
+**Um espaço dedicado à prática, ao aprendizado e à evolução na programação.**
 
 </div>
 
 ---
 
-## ✦ Sobre o repositório
+## 💻 Sobre o repositório
 
-Este repositório reúne minha trajetória de aprendizagem durante o **3º semestre de 2026 do curso Técnico em Desenvolvimento de Sistemas do SENAI**.
+Este repositório reúne atividades, exercícios, códigos e projetos desenvolvidos durante o último ano do curso Técnico em Desenvolvimento de Sistemas no SENAI, em 2026.
 
-Aqui estão organizados conteúdos das aulas, exercícios, atividades práticas e projetos desenvolvidos ao longo da formação.
+Aqui estão registrados diferentes conteúdos trabalhados ao longo da formação, desde os fundamentos do desenvolvimento até a criação de aplicações e projetos práticos.
 
-O objetivo é documentar minha evolução na programação, registrar conhecimentos adquiridos e manter meus projetos organizados para futuras consultas e aprimoramentos.
+Mais do que armazenar códigos, este espaço representa minha evolução, minhas experiências e os conhecimentos adquiridos durante essa jornada na tecnologia.
 
-> 💗 Cada pasta representa uma etapa do meu aprendizado e cada projeto é uma oportunidade de colocar meus conhecimentos em prática.
-
-## ✦ Organização do repositório
-
-| 📁 Pasta | 📝 Conteúdo |
-|:---|:---|
-| `aulas_react_native` | Aulas e atividades de desenvolvimento mobile com React Native. |
-| `backend` | Estudos e práticas relacionados ao desenvolvimento Back-end. |
-| `frontend` | Atividades de desenvolvimento Front-end. |
-| `lista_compras` | Projeto prático de lista de compras. |
-| `mobile` | Projetos e exercícios voltados ao desenvolvimento mobile. |
-| `projetos` | Projetos desenvolvidos durante o semestre. |
-
-## ✦ Tecnologias e ferramentas
+## 📚 Organização dos conteúdos
 
 <div align="center">
 
-### Desenvolvimento Web
+<table>
+<tr>
+<td align="center" width="50%">
 
-<img src="https://skillicons.dev/icons?i=html,css,js,react,vite,tailwind" />
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="48" height="48" />
 
-### Desenvolvimento Mobile e Back-end
+**Aulas React Native**
 
-<img src="https://skillicons.dev/icons?i=react,nodejs,express" />
+<sub>Atividades e práticas de desenvolvimento de aplicações mobile com React Native.</sub>
 
-### Banco de dados e ferramentas
+</td>
+<td align="center" width="50%">
 
-<img src="https://skillicons.dev/icons?i=postgres,git,github,vscode" />
+<img src="https://img.icons8.com/fluency/96/server.png" width="48" height="48" />
+
+**Back-end**
+
+<sub>Estudos relacionados à lógica do servidor, processamento e desenvolvimento back-end.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+
+<img src="https://img.icons8.com/fluency/96/web.png" width="48" height="48" />
+
+**Front-end**
+
+<sub>Desenvolvimento de interfaces, estruturação de páginas e estilização web.</sub>
+
+</td>
+<td align="center" width="50%">
+
+<img src="https://img.icons8.com/fluency/96/shopping-cart.png" width="48" height="48" />
+
+**Lista de Compras**
+
+<sub>Projeto prático para exercitar conceitos de desenvolvimento de aplicações.</sub>
+
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+
+<img src="https://img.icons8.com/fluency/96/smartphone.png" width="48" height="48" />
+
+**Mobile**
+
+<sub>Projetos e atividades voltados ao desenvolvimento para dispositivos móveis.</sub>
+
+</td>
+<td align="center" width="50%">
+
+<img src="https://img.icons8.com/fluency/96/source-code.png" width="48" height="48" />
+
+**Projetos**
+
+<sub>Aplicações, desafios e experiências práticas desenvolvidas durante o curso.</sub>
+
+</td>
+</tr>
+</table>
 
 </div>
 
-## ✦ Projetos e atividades
+## 🛠️ Tecnologias e ferramentas
 
-Durante o semestre, desenvolvo atividades práticas com o objetivo de aplicar os conceitos estudados em sala de aula.
+<div align="center">
 
-Entre os conteúdos e projetos trabalhados estão:
+**Desenvolvimento Web**
 
-- 💻 Desenvolvimento de interfaces e aplicações Web.
-- 📱 Criação de aplicações mobile com React Native.
-- ⚙️ Implementação de funcionalidades com JavaScript.
-- 🗄️ Estudos de Back-end e banco de dados.
-- 🧩 Organização e estruturação de projetos.
-- 🔗 Utilização do Git e GitHub para versionamento.
-- 🚀 Desenvolvimento de projetos práticos.
+<img src="https://skillicons.dev/icons?i=html,css,js,react" />
 
-## ✦ Objetivos de aprendizagem
+<br/><br/>
 
-- Aprimorar a lógica de programação.
-- Desenvolver aplicações completas.
-- Evoluir na construção de interfaces.
-- Compreender a integração entre Front-end e Back-end.
-- Praticar a utilização de bancos de dados.
-- Desenvolver autonomia na resolução de problemas.
-- Construir um portfólio de projetos práticos.
+**Desenvolvimento Mobile**
 
-## ✦ Estrutura de organização
+<img src="https://skillicons.dev/icons?i=react,androidstudio" />
+
+<br/><br/>
+
+**Back-end e banco de dados**
+
+<img src="https://skillicons.dev/icons?i=nodejs,express,postgres" />
+
+<br/><br/>
+
+**Ferramentas**
+
+<img src="https://skillicons.dev/icons?i=git,github,vscode" />
+
+</div>
+
+<sub>Ícones representam tecnologias presentes nos estudos e projetos relacionados ao repositório; nem todas são utilizadas em todas as atividades.</sub>
+
+## 🚀 Conhecimentos desenvolvidos
+
+- Desenvolvimento de interfaces web.
+- Programação com JavaScript.
+- Criação de aplicações com React e React Native.
+- Desenvolvimento de funcionalidades back-end.
+- Integração com bancos de dados.
+- Lógica de programação e resolução de problemas.
+- Organização de projetos e estruturação de código.
+- Versionamento e gerenciamento de repositórios com Git e GitHub.
+
+## 📂 Estrutura do repositório
 
 ```text
 3_Semestre2026_Senai/
@@ -97,29 +158,25 @@ Entre os conteúdos e projetos trabalhados estão:
 └── .prettierrc
 ```
 
-## ✦ Ferramentas de desenvolvimento
+## 🎯 Objetivo
 
-| Ferramenta | Utilização |
-|:---|:---|
-| Visual Studio Code | Ambiente de desenvolvimento |
-| Git | Controle de versão |
-| GitHub | Armazenamento e organização dos projetos |
-| Prettier | Formatação e padronização do código |
+Registrar e organizar minha trajetória de aprendizado no curso Técnico em Desenvolvimento de Sistemas, reunindo atividades práticas, experimentações e projetos desenvolvidos durante 2026.
 
-## ✦ Acompanhe minha evolução
+Cada pasta representa uma etapa de aprendizado e uma oportunidade de aprimorar minhas habilidades como desenvolvedora.
+
+## 👩🏻‍💻 Desenvolvido por
 
 <div align="center">
 
+<img src="https://github.com/RafaelaSsilva28.png" width="115" />
+
+### Rafaela Silva
+
+Estudante de Desenvolvimento de Sistemas
+
 <a href="https://github.com/RafaelaSsilva28">
-  <img src="https://img.shields.io/badge/MEU_GITHUB-292333?style=for-the-badge&logo=github&logoColor=white" />
+<img src="https://img.shields.io/badge/GitHub-RafaelaSsilva28-245B83?style=for-the-badge&logo=github&logoColor=white" />
 </a>
-
-<a href="https://github.com/RafaelaSsilva28/3_Semestre2026_Senai">
-  <img src="https://img.shields.io/badge/REPOSITÓRIO-C77D9B?style=for-the-badge&logo=github&logoColor=white" />
-</a>
-
-<br/><br/>
-
 
 </div>
 
@@ -127,10 +184,12 @@ Entre os conteúdos e projetos trabalhados estão:
 
 <div align="center">
 
-### ♡ Aprender, praticar e evoluir!
+### 💙 Aprender, praticar e evoluir.
 
-*Documentando minha jornada na tecnologia, um projeto de cada vez.*
+*Cada projeto é mais um passo na construção da minha jornada na tecnologia.*
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=C77D9B&height=110&section=footer" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Poppins&weight=500&size=16&duration=3000&pause=1000&color=5798C1&center=true&vCenter=true&width=450&lines=Transformando+conhecimento+em+código;O+futuro+é+construído+com+prática!" />
+
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&height=120&color=0:142D4E,45:245B83,100:79B5D2&section=footer" />
 
 </div>
